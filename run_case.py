@@ -28,7 +28,8 @@ def run():
 
     # 测试报告路径
     file_name = os.path.join(cur_path, "report") + "/" + now + "-report.html"
-
+    # print("测试报告路径" + os.path.join(cur_path, "report"))
+    # print("测试报告路径" + file_name)
     f = open(file_name, "wb")
     # runner = HTMLTestRunner(stream=f, title="接口自动化测试报告",
     #                         description="环境：windows 10 浏览器：chrome",
