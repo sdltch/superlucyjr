@@ -15,8 +15,13 @@ import time
 
 from common.write_excel import mywrite
 
+
+from config import read_data_config
+# 获取data_name
+data_name = str(read_data_config.data_name)
 lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data"))
-file_path = lib_path + "/" + "amirobotv30.xlsx"  # excel的地址
+# file_path = lib_path + "/" + "amirobotv30.xlsx"  # excel的地址
+file_path = lib_path + "/" + data_name +".xlsx"  # excel的地址
 sheet_name = "测试用例"
 log = MyLogging().logger
 myami = {}

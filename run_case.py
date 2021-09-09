@@ -11,6 +11,8 @@ from HwTestReport import HTMLTestReportEN
 from common.send_email import send_email
 
 # 获取当前py文件绝对路径
+from config import read_data_config
+
 cur_path = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -25,9 +27,10 @@ def all_test():
 # 2: 执行测试用例
 def run():
     now = time.strftime("%Y_%m_%d_%H_%M_%S")
-
+    # 获取data_name
+    data_name = str(read_data_config.data_name)
     # 测试报告路径
-    file_name = os.path.join(cur_path, "report") + "/" + now + "-report.html"
+    file_name = os.path.join(cur_path, "report") + "/" + now+data_name+"-report.html"
     # print("测试报告路径" + os.path.join(cur_path, "report"))
     # print("测试报告路径" + file_name)
     f = open(file_name, "wb")
