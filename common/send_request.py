@@ -1,56 +1,91 @@
 import ast
 import json
+from pathlib import PureWindowsPath, Path
 
 import requests
 import re
 
+# from common.logger import MyLogging
+# log = MyLogging().logger
+
+# #使用python代码发送https请求
+# import requests
+# requests.packages.urllib3.disable_warnings()#忽略警告
+# def login(inData):
+#     url="https://www.imooc.com/passport/user/prelogin"
+#     payload = inData
+#     resp = requests.post(url,data=payload,verify = False)#verify = False关闭认证
+#     print(resp.text)
+# login({"username":"tiger","password":"123456"})
+
+
+
+requests.packages.urllib3.disable_warnings()#忽略警告
 class RunMethod:
     # post请求
-    def do_post(self, url, data, parmsType,headers=None):
+    requests.packages.urllib3.disable_warnings()  # 忽略警告
+    def do_post(self, url, data, parmsType, headers=None, filepath=None):
         res = None
         if parmsType == 'json' or parmsType == 'JSON':
+            # log.info("最终parmsType = {}".format(parmsType))
             if headers != None:
-                res = requests.post(url=url, json=data, headers=headers)
+                if filepath != None:
+                    res = requests.post(url=url, json=data, files=filepath, headers=headers, verify = False)
+                else:
+                    res = requests.post(url=url, json=data, headers=headers, verify = False)
             else:
-                res = requests.post(url=url, json=data)
+                if filepath != None:
+                    res = requests.post(url=url, json=data, files=filepath, verify = False)
+                else:
+                    res = requests.post(url=url, json=data, verify = False)
         else:
-            print("formdata"+parmsType)
-            if headers != None:
-                res = requests.post(url=url, data=data, headers=headers)
+            # log.info("最终parmsType = {}".format(parmsType))
+            if headers != None :
+                if filepath != None:
+                    res = requests.post(url=url, data=data, files=filepath, headers=headers, verify = False)
+                else:
+                    res = requests.post(url=url, data=data, headers=headers, verify = False)
             else:
-                res = requests.post(url=url, data=data)
+                if filepath != None:
+                    res = requests.post(url=url, data=data, files=filepath, verify = False)
+                else:
+                    res = requests.post(url=url, data=data, verify = False)
         print("res:"+str(res))
         return res.json()
 
-    # get请求
+    #
+    requests.packages.urllib3.disable_warnings()  # 忽略警告
     def do_get(self, url, data=None, headers=None):
         res = None
         if headers != None:
-            res = requests.get(url=url, data=data, headers=headers)
+            res = requests.get(url=url, data=data, headers=headers, verify = False)
         else:
-            res = requests.get(url=url, data=data)
+            res = requests.get(url=url, data=data, verify = False)
         return res.json()
 
     # put请求
+    requests.packages.urllib3.disable_warnings()  # 忽略警告
     def do_put(self, url, data=None, headers=None):
         res = None
         if headers != None:
-            res = requests.put(url=url,data=data,headers=headers)
+            res = requests.put(url=url,json=data,headers=headers, verify = False)
         else:
-            res = requests.put(url=url, data=data)
+            res = requests.put(url=url, json=data, verify = False)
         return res.json()
 
     # delete请求
-    def do_delete(self, url, headers=None):
+    requests.packages.urllib3.disable_warnings()  # 忽略警告
+    def do_delete(self, url, data, headers=None):
         res = None
         if headers != None:
-            res = requests.delete(url=url,headers=headers)
+            res = requests.delete(url=url,data=data,headers=headers, verify = False)
         else:
-            res = requests.delete(url=url)
+            res = requests.delete(url=url,data=data, verify = False)
         return res.json()
 
-    def run_method(self, method, parmsType, url, data, headers, myami):
+    def run_method(self, method, parmsType, url, data, headers, myami, filepath):
         myheader={}
+        # 处理headers
         if len(headers) == 0:
             print("headers为空")
             if "tokenHeads" in myami and "tokenone" in myami:
@@ -85,7 +120,9 @@ class RunMethod:
                         print("value:" + splittwo[1])
                         ss = RunMethod.myvariable(self, splittwo[1], myami)
                         myheader[splittwo[0]] = ss
+
         # 根据入参类型给的Content-Type
+        # log.info("data数据类型1:" + str(type(data)))
         if parmsType=='json' or parmsType=='JSON':
             myheader['Content-Type']  = "application/json;charset=UTF-8"
             data = json.loads(data)  # 字典对象转换为json字符串
@@ -94,21 +131,34 @@ class RunMethod:
         elif parmsType=='fromdata' or parmsType=='FROMDATA':
             data = ast.literal_eval(data)  # 转化成字典
             myheader['Content-Type'] = "application/x-www-form-urlencoded;charset=UTF-8"
-            # # 参数之间的分隔。随意设定，只要不会和其他的字符串重复即可。
+        elif parmsType == 'fromsend' or parmsType == 'FROMSEND':
+            data = ast.literal_eval(data)  # 转化成字典
             # boundary = "------WebKitFormBoundaryerEzPLp0xMCUtCXe";
-            # myheader['Content-Type'] = "Content-Type","multipart/form-data; boundary="+boundary
-            # multipart/form-data; boundary=----WebKitFormBoundarywlXH6Qc0vbvGjNGA
-        for i in myheader:
-            print("最终header："+i+":"+myheader[i])
+            # myheader['Content-Type'] = "multipart/form-data; boundary="+boundary
+            # myheader['Content-Type'] = "multipart/form-data;boundary=------WebKitFormBoundaryerEzPLp0xMCUtCXe"
+
+        # log.info("data数据类型2:"+ str(type(data)))
+
+        # for i in myheader:
+            # log.info("最终header：%s" % myheader)
+        files = None
+        # filepath不为空处理文件
+        if len(filepath) != 0:
+            # log.info("最终filepath：{},不为空".format(filepath))
+            # binary上传文件
+            files = {"file": open("E:/amisrobot/amisbook识别文件/ami微服务/报关单/发票.xls", "rb")}
+            # files = {'file': open(filepath, 'rb').read()}
+        # else:
+            # log.info("最终filepath：{},为空".format(filepath))
 
         if method == "POST" or method == "post":
-            res = self.do_post(url, data, parmsType, myheader)
+            res = self.do_post(url, data, parmsType, myheader, files)
         elif method  == "GET" or method == "get":
             res = self.do_get(url, data, myheader)
         elif method == "PUT" or method == "put":
             res = self.do_put(url, data, myheader)
-        elif method == "DELTET" or method == "delete":
-            res = self.do_delete(url, myheader)
+        elif method == "DELETE" or method == "delete":
+            res = self.do_delete(url, data, myheader)
         else:
           print("系统暂不支持该请求："+method)
         return res

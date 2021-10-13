@@ -36,7 +36,7 @@ class TestCase(unittest.TestCase):
 
     @parameterized.expand(getExcelData())
     def test_api(self, rowNumber, caseRowNumber, testCaseName, priority, apiName, url, method, parmsType, data,
-                 checkPoint, myfile, response, headers, isRun, result ):
+                 checkPoint, filepath, response, headers, isRun, result ):
         isRun = isRun.upper();  # 转化成大写
         if isRun == "Y" or isRun == "y":
             log.info("【开始执行测试用例：{}】".format(caseRowNumber))
@@ -75,7 +75,8 @@ class TestCase(unittest.TestCase):
             #     log.info("asdf2" + str(data))
             # else:
             #     log.info("data为空")
-            res = r.run_method(method, parmsType, url, data, headers, myami)
+
+            res = r.run_method(method, parmsType, url, data, headers, myami ,filepath)
             log.info("返回结果：%s" % res)
             flag = None
             for i in range(0, len(c)):
@@ -166,6 +167,12 @@ class TestCase(unittest.TestCase):
                 if dataone in myami:
                     data = data.replace(i,myami[dataone])
         log.info("更改后data:"+data)
+        return data
+
+    # rsa加密
+    def rsadata(self,data):
+
+
         return data
 
 if __name__ == '__main__':

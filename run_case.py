@@ -8,6 +8,8 @@ from HwTestReport import HTMLTestReport
 
 # 英文 English
 from HwTestReport import HTMLTestReportEN
+
+from common.reportmobile import repotmob
 from common.send_email import send_email
 
 # 获取当前py文件绝对路径
@@ -30,7 +32,7 @@ def run():
     # 获取data_name
     data_name = str(read_data_config.data_name)
     # 测试报告路径
-    file_name = os.path.join(cur_path, "report") + "/" + now+data_name+"-report.html"
+    file_name = os.path.join(cur_path, "report") + "/" + now+"_"+data_name+"-report.html"
     # print("测试报告路径" + os.path.join(cur_path, "report"))
     # print("测试报告路径" + file_name)
     f = open(file_name, "wb")
@@ -70,6 +72,7 @@ def run():
 # 3: 获取最新的测试报告
 def get_report(report_path):
     list = os.listdir(report_path)
+    print("路径："+report_path)
     list.sort(key=lambda x: os.path.getmtime(os.path.join(report_path, x)))
     print("测试报告：", list[-1])
     report_file = os.path.join(report_path, list[-1])
@@ -85,6 +88,8 @@ def send_mail(subject, report_file, file_names):
 
 
 if __name__ == "__main__":
+    s = repotmob()
+    s.remobile()
     run()
     # report_path = os.path.join(cur_path, "report")  # 测试报告路径
     # report_file = get_report(report_path)  # 测试报告文件
