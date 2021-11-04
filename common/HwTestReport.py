@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # coding=utf-8
-__author__ = "zhaohongwei"
-__email__ = "hongweifuture@163.com"
+__author__ = "sdl"
+__email__ = "sdl@163.com"
 __contact__ = "https://blog.csdn.net/z_johnny"
 __version__ = "0.1"
 __date__ = "2019/9/2 16:37"
-__maintainer__ = "zhaohongwei,"
+__maintainer__ = "sdl,"
 __description__ = ""
 
 from importlib import reload
 
 """
 History:
-2019/9/2 16:37 : Created by zhaohongwei 
+2019/9/2 16:37 : Created by sdl 
 """
 
 import datetime
@@ -20,7 +20,7 @@ import sys
 import unittest
 from xml.sax import saxutils
 
-# 支持 python2 and python3  --zhaohongwei
+# 支持 python2 and python3  --sdl
 python3 = (sys.version_info[0] > 2)
 if python3:
     import io as StringIO
@@ -61,7 +61,7 @@ class Template_CN(object):
         2: u'错误',
     }
 
-    # 增加 tester  --zhaohongwei
+    # 增加 tester  --sdl
     DEFAULT_TITLE = '测试报告'
     DEFAULT_DESCRIPTION = ''
     DEFAULT_TESTER = 'Johnny Zhao'
@@ -85,7 +85,7 @@ class Template_CN(object):
     <script language="javascript" type="text/javascript"><!--
     output_list = Array();
 
-    /*level 增加测试结果的筛选条件  --zhaohongwei
+    /*level 增加测试结果的筛选条件  --sdl
     0:Summary //all hiddenRow
     1:Pass    //pt none, ft hiddenRow, et hiddenRow
     2:Failed  //pt hiddenRow, ft none, et hiddenRow
@@ -125,7 +125,7 @@ class Template_CN(object):
             }
         }
     }
-    /* 优化详情与收缩不生效  --zhaohongwei */
+    /* 优化详情与收缩不生效  --sdl */
     function showClassDetail(cid, count) {
         var id_list = Array(count);
         var toHide = 1;
@@ -137,7 +137,7 @@ class Template_CN(object):
                 tid = 'p' + tid0;
                 tr = document.getElementById(tid);
             }
-            /* 增加error  --zhaohongwei*/
+            /* 增加error  --sdl*/
             if (!tr) {
                 tid = 'e' + tid0;
                 tr = document.getElementById(tid);
@@ -178,7 +178,7 @@ class Template_CN(object):
         s = s.replace(/>/g,'&gt;');
         return s;
     }
-    /* 增加selenium结合unittest测试的结果截图 --zhaohongwei  引用自GoverSky*/
+    /* 增加selenium结合unittest测试的结果截图 --sdl  引用自GoverSky*/
     function show_img(obj) {
         var obj1 = obj.nextElementSibling
         obj1.style.display='block'
@@ -243,7 +243,7 @@ class Template_CN(object):
 </html>
 """
     # variables: (title, generator, stylesheet, heading, report, ending, chart_script)
-    # 增加饼图  --zhaohongwei  引用自huilansame
+    # 增加饼图  --sdl  引用自huilansame
     ECHARTS_SCRIPT = """
         <script type="text/javascript">
             // 基于准备好的dom，初始化echarts实例
@@ -424,7 +424,7 @@ a.popup_link:hover {
     # ------------------------------------------------------------------------
     # Heading
     #
-    # 修改饼图位置 --zhaohongwei
+    # 修改饼图位置 --sdl
     HEADING_TMPL = """
     <div class='page-header'>
         <h1>%(title)s
@@ -549,7 +549,7 @@ a.popup_link:hover {
 </tr>
 """  # variables: (style, desc, count, Pass, fail, error, cid)
 
-    # 修改详情展开与收缩 --zhaohongwei
+    # 修改详情展开与收缩 --sdl
     REPORT_TEST_WITH_OUTPUT_TMPL = r"""
 <tr id='%(tid)s' class='%(Class)s'>
     <td class='%(style)s'><div class='testcase'>%(desc)s</div></td>
@@ -649,10 +649,10 @@ class Template_EN(object):
         2: u'error',
     }
 
-    # add tester  --zhaohongwei
+    # add tester  --sdl
     DEFAULT_TITLE = 'Test Report'
     DEFAULT_DESCRIPTION = ''
-    DEFAULT_TESTER = 'Johnny Zhao'
+    DEFAULT_TESTER = 'dalong shu'
 
     # ------------------------------------------------------------------------
     # HTML Template
@@ -673,7 +673,7 @@ class Template_EN(object):
     <script language="javascript" type="text/javascript"><!--
     output_list = Array();
 
-    /*level add test choice  --zhaohongwei
+    /*level add test choice  --sdl
     0:Summary //all hiddenRow
     1:Pass    //pt none, ft hiddenRow, et hiddenRow
     2:Failed  //pt hiddenRow, ft none, et hiddenRow
@@ -713,7 +713,7 @@ class Template_EN(object):
             }
         }
     }
-    /* Optimizing Details and Contraction Not Effective  --zhaohongwei */
+    /* Optimizing Details and Contraction Not Effective  --sdl */
     function showClassDetail(cid, count) {
         var id_list = Array(count);
         var toHide = 1;
@@ -725,7 +725,7 @@ class Template_EN(object):
                 tid = 'p' + tid0;
                 tr = document.getElementById(tid);
             }
-            /* 增加error  --zhaohongwei*/
+            /* 增加error  --sdl*/
             if (!tr) {
                 tid = 'e' + tid0;
                 tr = document.getElementById(tid);
@@ -766,7 +766,7 @@ class Template_EN(object):
         s = s.replace(/>/g,'&gt;');
         return s;
     }
-    /* add test screenshot --zhaohongwei  from GoverSky*/
+    /* add test screenshot --sdl  from GoverSky*/
     function show_img(obj) {
         var obj1 = obj.nextElementSibling
         obj1.style.display='block'
@@ -832,7 +832,7 @@ class Template_EN(object):
 """
 
     # variables: (title, generator, stylesheet, heading, report, ending, chart_script)
-    # add Pie chart --zhaohongwei  from huilansame
+    # add Pie chart --sdl  from huilansame
     ECHARTS_SCRIPT = """
             <script type="text/javascript">
                 var myChart = echarts.init(document.getElementById('chart'));
@@ -1012,7 +1012,7 @@ a.popup_link:hover {
     # ------------------------------------------------------------------------
     # Heading
     #
-    # change Pie chart local --zhaohongwei
+    # change Pie chart local --sdl
     HEADING_TMPL = """
     <div class='page-header'>
         <h1>%(title)s
@@ -1135,7 +1135,7 @@ a.popup_link:hover {
 </tr>
 """  # variables: (style, desc, count, Pass, fail, error, cid)
 
-    # Modification Details Expansion and Contraction  --zhaohongwei
+    # Modification Details Expansion and Contraction  --sdl
     REPORT_TEST_WITH_OUTPUT_TMPL = r"""
 <tr id='%(tid)s' class='%(Class)s'>
     <td class='%(style)s'><div class='testcase'>%(desc)s</div></td>
@@ -1583,7 +1583,7 @@ class HTMLTestReport(Template_CN):
     def _generate_report_test(self, rows, cid, tid, n, t, o, e):
         # e.g. 'pt1.1', 'ft1.1', etc
         has_output = bool(o or e)
-        # 增加error --zhaohongwei
+        # 增加error --sdl
         tid = (n == 0 and 'p' or n == 1 and 'f' or 'e') + 't%s_%s' % (cid + 1, tid + 1)
 
         name = t.id().split('.')[-1]
@@ -1834,7 +1834,7 @@ class HTMLTestReportEN(Template_EN):
     def _generate_report_test(self, rows, cid, tid, n, t, o, e):
         # e.g. 'pt1.1', 'ft1.1', etc
         has_output = bool(o or e)
-        # add error --zhaohongwei
+        # add error --sdl
         tid = (n == 0 and 'p' or n == 1 and 'f' or 'e') + 't%s_%s' % (cid + 1, tid + 1)
 
         name = t.id().split('.')[-1]

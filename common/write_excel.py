@@ -8,21 +8,43 @@ from openpyxl import load_workbook
 from self import self
 import easygui
 from win32com.client import Dispatch
+from openpyxl.styles import Font
+from openpyxl.styles.colors import (BLACK, RED, GREEN)
+
+from openpyxl import load_workbook
+from collections import namedtuple
+
+
 
 class mywrite:
-    def write(self, myexcel, myshell, rowNum, colNum, results):
+    def write_cell(self, sheet_name, row, column, value, color='black'):
+        """write cell value with color"""
+        if isinstance(row, int) and isinstance(column, int):
+            try:
+                cell_obj = self.wb[sheet_name].cell(row, column)
+                cell_obj.font = Font(color=self.RGBDict[color], bold=True)
+                cell_obj.value = value
+                self.wb.save(self.filename)
+            except Exception as e:
+                raise e
+        else:
+            raise TypeError('row and column must be type int')
+
+    def write(self, myexcel, myshell, rowNum, colNum, results, color='black'):
         # wb = load_workbook("D:/testdata/gitami/pythonami/pythontest/data/接口自动化测试.xlsx")
         # wb2 = wb['测试用例']
         # wb2.cell(2, 13, '333')
         # wb.save("D:/testdata/gitami/pythonami/pythontest/data/接口自动化测试.xlsx")  # 保存
-
         wb = openpyxl.load_workbook(myexcel)
         # wb = xlrd.open_workbook(myexcel)
         page = len(wb.sheetnames)
         # page = len(wb.sheets())
         print("sda—："+str(myshell))
         wb2 = wb[myshell]
-        wb2.cell(rowNum, colNum, results)
+
+        ss = wb2.cell(rowNum, colNum, results)
+        RGBDict = {'red': RED, 'green': GREEN, 'black': BLACK}
+        ss.font = Font(color=RGBDict[color], bold=True)
         wb.save(myexcel)  # 保存
         wb.close()  #关闭
         print("成功")

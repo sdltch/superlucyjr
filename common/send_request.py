@@ -42,25 +42,28 @@ class RunMethod:
             # log.info("最终parmsType = {}".format(parmsType))
             if headers != None :
                 if filepath != None:
-                    res = requests.post(url=url, data=data, files=filepath, headers=headers, verify = False)
+                    res = requests.post(url=url, params=data, files=filepath, headers=headers, verify = False)
                 else:
-                    res = requests.post(url=url, data=data, headers=headers, verify = False)
+                    res = requests.post(url=url, params=data, headers=headers, verify = False)
             else:
                 if filepath != None:
-                    res = requests.post(url=url, data=data, files=filepath, verify = False)
+                    res = requests.post(url=url, params=data, files=filepath, verify = False)
                 else:
-                    res = requests.post(url=url, data=data, verify = False)
-        print("res:"+str(res))
+                    res = requests.post(url=url, params=data, verify = False)
+        # print("res:"+str(res))
         return res.json()
 
-    #
+    # get请求
     requests.packages.urllib3.disable_warnings()  # 忽略警告
     def do_get(self, url, data=None, headers=None):
         res = None
         if headers != None:
-            res = requests.get(url=url, data=data, headers=headers, verify = False)
+            # res = requests.get(url=url, data=data, headers=headers, verify = False)
+            res = requests.get(url=url, params=data, headers=headers, verify = False)
         else:
-            res = requests.get(url=url, data=data, verify = False)
+            # res = requests.get(url=url, data=data, verify = False)
+            res = requests.get(url=url, params=data, verify = False)
+
         return res.json()
 
     # put请求
@@ -86,6 +89,8 @@ class RunMethod:
     def run_method(self, method, parmsType, url, data, headers, myami, filepath):
         myheader={}
         # 处理headers
+        myheader["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+        myheader["cookie"] = "Hm_lvt_c643121bdfca1e6513ab0daaa7564974=1634518987,1634604200,1634692298,1634778409; Hm_lpvt_c643121bdfca1e6513ab0daaa7564974=1634787272"
         if len(headers) == 0:
             print("headers为空")
             if "tokenHeads" in myami and "tokenone" in myami:
@@ -125,7 +130,8 @@ class RunMethod:
         # log.info("data数据类型1:" + str(type(data)))
         if parmsType=='json' or parmsType=='JSON':
             myheader['Content-Type']  = "application/json;charset=UTF-8"
-            data = json.loads(data)  # 字典对象转换为json字符串
+            # data = json.loads(data)  # 字典对象转换为json字符串 ,需要双引号
+            data = ast.literal_eval(data)
         elif parmsType=='from' or parmsType=='FROM':
             myheader['Content-Type'] = "application/x-www-form-urlencoded;charset=UTF-8"
         elif parmsType=='fromdata' or parmsType=='FROMDATA':
@@ -146,8 +152,8 @@ class RunMethod:
         if len(filepath) != 0:
             # log.info("最终filepath：{},不为空".format(filepath))
             # binary上传文件
-            files = {"file": open("E:/amisrobot/amisbook识别文件/ami微服务/报关单/发票.xls", "rb")}
-            # files = {'file': open(filepath, 'rb').read()}
+            # files = {"file": open("E:/amisrobot/amisbook识别文件/ami微服务/报关单/面单.xls", "rb")}
+            files = {"file": open(filepath, "rb")}
         # else:
             # log.info("最终filepath：{},为空".format(filepath))
 
